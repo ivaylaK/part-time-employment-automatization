@@ -16,7 +16,9 @@ import java.sql.Time;
 public class Job {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobs_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jobs_seq_generator")
+    @SequenceGenerator(name = "jobs_seq_generator", sequenceName = "jobs_id_seq", allocationSize = 1)
+
     private Long id;
 
     private String title;
