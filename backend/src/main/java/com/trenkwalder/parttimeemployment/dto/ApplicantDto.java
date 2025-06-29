@@ -1,8 +1,11 @@
 package com.trenkwalder.parttimeemployment.dto;
 
+import com.trenkwalder.parttimeemployment.entity.Job;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,4 +17,7 @@ public class ApplicantDto {
     private String firstName;
     private String lastName;
     private String number;
+
+    private List<Job> jobsApplied;
+    private Integer rank;
 }

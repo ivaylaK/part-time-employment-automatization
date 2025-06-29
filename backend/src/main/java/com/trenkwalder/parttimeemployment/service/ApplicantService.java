@@ -2,6 +2,7 @@ package com.trenkwalder.parttimeemployment.service;
 
 import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
+import org.springframework.core.io.ByteArrayResource;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,10 @@ public interface ApplicantService {
     List<Applicant> findAllApplicants();
 
     Optional<Applicant> findApplicantById(Long id);
+
+    ByteArrayResource exportApplicantsToExcel();
+
+    void updateRank(Long id, Integer rank);
 
     void deleteApplicant(Long id);
 }
