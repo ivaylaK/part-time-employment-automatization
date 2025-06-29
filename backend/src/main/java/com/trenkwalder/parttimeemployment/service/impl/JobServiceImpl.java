@@ -1,5 +1,6 @@
 package com.trenkwalder.parttimeemployment.service.impl;
 
+import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
 import com.trenkwalder.parttimeemployment.repository.JobRepository;
 import com.trenkwalder.parttimeemployment.service.JobService;
@@ -37,6 +38,14 @@ public class JobServiceImpl implements JobService {
     @Override
     public Optional<Job> findJobById(Long id) {
         return jobRepository.findById(id);
+    }
+
+    @Override
+    public List<Applicant> getApplicantsByJobId(Long jobId) {
+        Job job = jobRepository.findById(jobId).orElseThrow(
+                () -> new RuntimeException("Job not found")
+        );
+        return job.getApplicants();
     }
 
     @Override

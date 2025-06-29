@@ -1,19 +1,20 @@
 package com.trenkwalder.parttimeemployment.controller;
 
 import com.trenkwalder.parttimeemployment.dto.JobDto;
+import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
 import com.trenkwalder.parttimeemployment.mapper.Mapper;
 import com.trenkwalder.parttimeemployment.service.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
+@RequestMapping(path = "/jobs")
 public class JobController {
 
     private final JobService jobService;
@@ -25,14 +26,14 @@ public class JobController {
         this.jobMapper = jobMapper;
     }
 
-    @PostMapping(path = "/jobs")
+    @PostMapping()
     public ResponseEntity<JobDto> createJob(@RequestBody JobDto jobDto) {
         Job job = jobService.saveJob(jobMapper.mapFrom(jobDto));
         return new ResponseEntity<>(jobMapper.mapTo(job), HttpStatus.CREATED);
 
     }
 
-    @GetMapping(path = "/jobs")
+    @GetMapping()
     public List<JobDto> getAllJobs() {
         List<Job> jobs = jobService.findAllJobs();
         return jobs
@@ -41,7 +42,7 @@ public class JobController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/jobs/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<JobDto> getJobById(@PathVariable("id") Long id) {
         Optional<Job> foundJob = jobService.findJobById(id);
         return foundJob.map(
@@ -49,7 +50,7 @@ public class JobController {
         ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/jobs/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<JobDto> updateJob(@RequestBody JobDto jobDto, @PathVariable("id") Long id) {
         if (jobService.findJobById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,8 +61,13 @@ public class JobController {
         return new ResponseEntity<>(jobMapper.mapTo(updatedJob), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/applicants")
+    public List<Applicant> getApplicantsForJob(@PathVariable Long id) {
+        return jobService.getApplicantsByJobId(id);
+    }
 
-    @DeleteMapping(path = "/jobs/{id}")
+
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteJob(@PathVariable("id") Long id) {
         if (jobService.findJobById(id).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

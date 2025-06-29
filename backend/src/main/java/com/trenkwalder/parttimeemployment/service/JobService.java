@@ -1,5 +1,6 @@
 package com.trenkwalder.parttimeemployment.service;
 
+import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface JobService {
     List<Job> findAllJobs();
 
     Optional<Job> findJobById(Long id);
+
+    List<Applicant> getApplicantsByJobId(Long jobId);
 
     void deleteJob(Long id);
 }

@@ -1,11 +1,13 @@
 package com.trenkwalder.parttimeemployment.dto;
 
+import com.trenkwalder.parttimeemployment.entity.Applicant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,16 +17,17 @@ public class JobDto {
     private Long id;
 
     private String title;
+    private String description;
     private String company;
     private String city;
     private String location;
 
     private Date startDate;
     private Date endDate;
-    private Time shiftStart;
-    private Time shiftEnd;
-
-    private double hourlyPay;
+    private String shiftStart;
+    private String shiftEnd;
 
     private int availableSlots;
+
+    private List<Applicant> applicants;
 }
