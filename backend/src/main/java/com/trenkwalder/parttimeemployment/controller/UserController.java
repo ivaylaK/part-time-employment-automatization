@@ -4,7 +4,8 @@ import com.trenkwalder.parttimeemployment.dto.LoginDto;
 import com.trenkwalder.parttimeemployment.dto.UserDto;
 
 import com.trenkwalder.parttimeemployment.entity.User;
-import com.trenkwalder.parttimeemployment.mapper.JobMapper;
+import com.trenkwalder.parttimeemployment.mapper.ApplicantMapper;
+import com.trenkwalder.parttimeemployment.service.ApplicantService;
 import com.trenkwalder.parttimeemployment.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ApplicantService applicantService, ApplicantMapper applicantMapper) {
         this.userService = userService;
     }
 

@@ -61,6 +61,7 @@ public class UserService {
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password!");
         }
+        System.out.println(user.getRole());
         return jwtUtil.generateToken(user.getEmail(), user.getRole());
     }
 }
