@@ -38,9 +38,10 @@ public class SecurityConfig {
                     registry.requestMatchers("/authentication/**").permitAll();
                     registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    registry.requestMatchers("/jobs/*/applicants").hasRole("ADMIN");
                     registry.requestMatchers("/admin/jobs/**").authenticated();
                     registry.requestMatchers("/user/**").hasRole("USER");
-                    registry.requestMatchers("/applicants/**").hasRole("USER");
+                    registry.requestMatchers("/applicants/**").hasAnyRole("USER", "ADMIN");
                     registry.anyRequest().authenticated();
                 }).formLogin(AbstractAuthenticationFilterConfigurer::disable);
 
