@@ -1,7 +1,10 @@
 package com.trenkwalder.parttimeemployment.service.impl;
 
 import com.trenkwalder.parttimeemployment.entity.Applicant;
+import com.trenkwalder.parttimeemployment.entity.Job;
+import com.trenkwalder.parttimeemployment.entity.User;
 import com.trenkwalder.parttimeemployment.repository.ApplicantRepository;
+import com.trenkwalder.parttimeemployment.repository.JobRepository;
 import com.trenkwalder.parttimeemployment.service.ApplicantService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,9 +24,11 @@ import java.util.stream.StreamSupport;
 public class ApplicantServiceImpl implements ApplicantService {
 
     private final ApplicantRepository applicantRepository;
+    private final JobRepository jobRepository;
 
-    public ApplicantServiceImpl(ApplicantRepository applicantRepository) {
+    public ApplicantServiceImpl(ApplicantRepository applicantRepository, JobRepository jobRepository) {
         this.applicantRepository = applicantRepository;
+        this.jobRepository = jobRepository;
     }
 
     @Override
@@ -44,6 +49,31 @@ public class ApplicantServiceImpl implements ApplicantService {
     @Override
     public Optional<Applicant> findApplicantById(Long id) {
         return applicantRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Applicant> findApplicantByUser(User user) {
+        return applicantRepository.findByUser(user);
+    }
+
+    @Override
+    public List<Job> getAppliedJobs(User user) {
+        Applicant applicant = applicantRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("Applicant not found"));
+        return applicant.getJobsApplied();
+    }
+
+    @Override
+    public List<Job> getAvailableJobs(User user) {
+        Applicant applicant = applicantRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("Applicant not found"));
+
+        List<Job> appliedJobs = applicant.getJobsApplied();
+        List<Job> allJobsAvailable = jobRepository.findJobsWithAvailableSlots();
+
+        return allJobsAvailable.stream()
+                .filter(job -> !appliedJobs.contains(job))
+                .toList();
     }
 
     @Override

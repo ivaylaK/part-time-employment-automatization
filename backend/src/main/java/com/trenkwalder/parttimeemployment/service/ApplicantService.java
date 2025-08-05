@@ -2,6 +2,7 @@ package com.trenkwalder.parttimeemployment.service;
 
 import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
+import com.trenkwalder.parttimeemployment.entity.User;
 import org.springframework.core.io.ByteArrayResource;
 
 import java.util.List;
@@ -14,6 +15,12 @@ public interface ApplicantService {
     List<Applicant> findAllApplicants();
 
     Optional<Applicant> findApplicantById(Long id);
+
+    Optional<Applicant> findApplicantByUser(User user);
+
+    List<Job> getAppliedJobs(User user);
+
+    List<Job> getAvailableJobs(User user);
 
     ByteArrayResource exportApplicantsToExcel();
 

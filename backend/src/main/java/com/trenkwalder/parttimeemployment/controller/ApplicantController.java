@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,14 +65,19 @@ public class ApplicantController {
         ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(path = "/self")
+    public ResponseEntity<ApplicantDto> getUserApplicant(@AuthenticationPrincipal User user) {
+        Optional<Applicant> foundApplicant = applicantService.findApplicantByUser(user);
+        return foundApplicant.map(
+                applicant -> new ResponseEntity<>(applicantMapper.mapTo(applicant), HttpStatus.OK)
+        ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping(path = "/dashboardApplied")
     public ResponseEntity<List<JobDto>> getAppliedJobs(@AuthenticationPrincipal(expression = "username") String email) {
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        Applicant applicant = user.getApplicant();
-        if (applicant == null) return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-
-        List<Job> jobs = applicant.getJobsApplied();
+        List<Job> jobs = applicantService.getAppliedJobs(user);
         List<JobDto> jobDtos = jobs.stream().map(jobMapper::mapTo).toList();
 
         return new ResponseEntity<>(jobDtos, HttpStatus.OK);
@@ -83,15 +87,7 @@ public class ApplicantController {
     public ResponseEntity<List<JobDto>> getAvailableJobs(@AuthenticationPrincipal(expression = "username") String email) {
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        Applicant applicant = user.getApplicant();
-        if (applicant == null) return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-
-        List<Job> allJobs = jobService.findAllJobs();
-        List<Job> appliedJobs = applicant.getJobsApplied();
-
-        List<Job> availableJobs = allJobs.stream()
-                .filter(job -> !appliedJobs.contains(job)).toList();
-
+        List<Job> availableJobs = applicantService.getAvailableJobs(user);
         List<JobDto> jobDtos = availableJobs.stream().map(jobMapper::mapTo).toList();
 
         return new ResponseEntity<>(jobDtos, HttpStatus.OK);

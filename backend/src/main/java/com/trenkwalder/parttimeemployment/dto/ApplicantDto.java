@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,7 +18,8 @@ public class ApplicantDto {
     private String firstName;
     private String lastName;
     private String number;
+    private String city;
 
-    private List<Job> jobsApplied;
+    private List<Job> jobsApplied = new ArrayList<>();
     private Integer rank;
 }
