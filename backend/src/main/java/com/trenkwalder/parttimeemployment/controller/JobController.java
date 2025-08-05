@@ -1,8 +1,10 @@
 package com.trenkwalder.parttimeemployment.controller;
 
+import com.trenkwalder.parttimeemployment.dto.ApplicantDto;
 import com.trenkwalder.parttimeemployment.dto.JobDto;
 import com.trenkwalder.parttimeemployment.entity.Applicant;
 import com.trenkwalder.parttimeemployment.entity.Job;
+import com.trenkwalder.parttimeemployment.mapper.ApplicantMapper;
 import com.trenkwalder.parttimeemployment.mapper.Mapper;
 import com.trenkwalder.parttimeemployment.service.JobService;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,13 @@ public class JobController {
 
     private final JobService jobService;
     private final Mapper<Job, JobDto> jobMapper;
+    private final ApplicantMapper applicantMapper;
 
 
-    public JobController(JobService jobService, Mapper<Job, JobDto> jobMapper) {
+    public JobController(JobService jobService, Mapper<Job, JobDto> jobMapper, ApplicantMapper applicantMapper) {
         this.jobService = jobService;
         this.jobMapper = jobMapper;
+        this.applicantMapper = applicantMapper;
     }
 
     @PostMapping()
@@ -62,8 +66,10 @@ public class JobController {
     }
 
     @GetMapping("/{id}/applicants")
-    public List<Applicant> getApplicantsForJob(@PathVariable Long id) {
-        return jobService.getApplicantsByJobId(id);
+    public List<ApplicantDto> getApplicantsForJob(@PathVariable Long id) {
+        return jobService.getApplicantsByJobId(id).stream()
+                .map(applicantMapper::mapTo)
+                .collect(Collectors.toList());
     }
 
 

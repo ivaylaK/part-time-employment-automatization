@@ -27,7 +27,8 @@ public class JobDto {
     private String shiftStart;
     private String shiftEnd;
 
-    private int availableSlots;
+    private Integer totalSlots;
+    private Integer applicantsCount;
 
-    private List<Applicant> applicants;
+//    private List<Applicant> applicants;
 }

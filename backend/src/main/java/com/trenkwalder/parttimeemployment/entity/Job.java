@@ -34,7 +34,8 @@ public class Job {
     private LocalTime shiftStart;
     private LocalTime shiftEnd;
 
-    private int availableSlots;
+    private Integer totalSlots;
+    private Integer applicantsCount;
 
     @ManyToMany
     @JoinTable(name = "jobs_applicants",
@@ -49,5 +50,13 @@ public class Job {
     public List<Applicant> getApplicants() {
         if (applicants == null) applicants = new ArrayList<>();
         return applicants;
+    }
+
+    public int getRemainingSlots() {
+        return totalSlots - applicantsCount;
+    }
+
+    public boolean hasAvailableSlots() {
+        return applicantsCount < totalSlots;
     }
 }
