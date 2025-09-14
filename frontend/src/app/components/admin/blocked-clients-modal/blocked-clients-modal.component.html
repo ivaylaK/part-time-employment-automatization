@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h5 class="modal-title">Blocked companies for {{ firstName }} {{ lastName }}</h5>
+  <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="mb-3">
+    <label class="form-label">Add new company (free text)</label>
+    <div class="input-group">
+      <input class="form-control" [(ngModel)]="typedInClient" placeholder="Type company name..." />
+      <button class="btn btn-primary" (click)="addTypedIn()">
+        Add
+      </button>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Or pick from existing clients</label>
+    <div class="input-group">
+      <select class="form-select" [(ngModel)]="selectedFromListClient">
+        <option value="">-- Select client --</option>
+        <option *ngFor="let client of allClients"
+                [ngValue]="client">
+          {{ client }}
+        </option>
+      </select>
+      <button class="btn btn-outline-primary" (click)="addSelectedFromList()" [disabled]="!selectedFromListClient">
+        Add
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label">Currently blocked</label>
+    <div class="d-flex flex-wrap gap-2">
+      <span class="badge text-bg-secondary" *ngFor="let client of blockedClients">
+        {{ client }}
+        <button class="btn-close btn-close-white ms-1" style="font-size:.6rem" (click)="remove(client)"></button>
+      </span>
+    </div>
+    <div *ngIf="!blockedClients.length" class="text-muted small mt-2">No restrictions</div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" (click)="modal.close()">Done</button>
+</div>
