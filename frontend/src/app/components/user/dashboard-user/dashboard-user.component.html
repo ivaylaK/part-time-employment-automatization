@@ -1,0 +1,55 @@
+<div> Добре дошли в платформата на Тренквалдер </div>
+
+<button class="btn btn-outline-primary position-relative" (click)="openMessages()">
+  Съобщения
+  <span *ngIf="messagesCount > 0"
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    {{ messagesCount }}
+    <span class="visually-hidden">непрочетени</span>
+  </span>
+</button>
+
+<div class="toggle">
+  <button (click)="showAvailable = false" [disabled]="!showAvailable"> Мои смени </button>
+  <button (click)="showAvailable = true" [disabled]="showAvailable"> Налични смени </button>
+</div>
+
+<ng-container *ngIf="showAvailable; else appliedJobsSection">
+  <ng-container *ngIf="availableJobs.length > 0; else noJobs">
+    <table>
+      <tr *ngFor="let job of availableJobs">
+        <td>
+          <div class="job-preview">
+            <h3>{{ job.title }}</h3>
+            <p>{{ job.client }}</p>
+            <p>{{ job.city }}</p>
+            <p>{{ job.startDate | date }} - {{ job.endDate | date }}</p>
+            <button (click)="details(job.id)"> View Details </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #appliedJobsSection>
+  <ng-container *ngIf="appliedJobs.length > 0; else noJobs">
+    <table>
+      <tr *ngFor="let job of appliedJobs">
+        <td>
+          <div class="job-preview">
+            <h3>{{ job.title }}</h3>
+            <p>{{ job.client }}</p>
+            <p>{{ job.city }}</p>
+            <p>{{ job.startDate | date }} - {{ job.endDate | date }}</p>
+            <button (click)="details(job.id)"> View Details </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </ng-container>
+</ng-template>
+
+<ng-template #noJobs>
+  <p>В момента няма налични позиции.</p>
+</ng-template>
