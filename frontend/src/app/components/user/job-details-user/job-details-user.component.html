@@ -1,0 +1,32 @@
+<div>
+  <p>{{job.title}}</p>
+  <p>{{job.description}}</p>
+  <p>{{job.client}}</p>
+  <p>{{job.city}}</p>
+  <p>{{job.location}}</p>
+  <p>{{job.startDate}}</p>
+  <p>{{job.endDate}}</p>
+  <p>{{job.shiftStart}}</p>
+  <p>{{job.shiftEnd}}</p>
+  <p>{{job.personInCharge}}</p>
+  <p>{{job.personInChargeNumber}}</p>
+  <p>Available: {{availableSlots()}} / {{job.totalSlots}}</p>
+</div>
+
+<div>
+  <button (click)="goBack()">
+    Back
+  </button>
+
+  <button *ngIf="!isApplied && canApply()" (click)="applyForJob()">
+    Apply
+  </button>
+
+  <button *ngIf="!isApplied && !canApply()" (click)="requestToApply()">
+    Request to apply
+  </button>
+
+  <button *ngIf="isApplied" (click)="requestToUnapply()">
+    Request to unapply
+  </button>
+</div>
