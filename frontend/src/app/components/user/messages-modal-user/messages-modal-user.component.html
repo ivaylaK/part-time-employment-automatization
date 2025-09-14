@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h5 class="modal-title">Съобщения</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <ng-container *ngIf="notifications?.length; else empty">
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-start"
+          *ngFor="let n of notifications">
+        <div class="ms-2 me-auto" [class.text-muted]="n.read">
+          <div class="fw-semibold d-flex align-items-center gap-2">
+            <span *ngIf="!n.read" class="badge bg-primary rounded-circle" style="width:8px;height:8px;"></span>
+            {{ n.message }}
+          </div>
+          <small class="text-muted">{{ n.created | date:'medium' }}</small>
+        </div>
+
+        <div class="btn-group">
+          <button *ngIf="n.jobId"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="apply(n)"
+                  [disabled]="selected===n.id">
+            Apply
+          </button>
+          <button class="btn btn-sm btn-outline-success"
+                  (click)="markOneRead(n)"
+                  [disabled]="n.read || selected === n.id">
+            Mark read
+          </button>
+          <button class="btn btn-sm btn-outline-danger"
+                  (click)="remove(n.id)"
+                  [disabled]="selected===n.id">
+            Delete
+          </button>
+        </div>
+      </li>
+    </ul>
+  </ng-container>
+
+  <ng-template #empty>
+    <p>Нямате съобщения за последните 30 дни.</p>
+  </ng-template>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-outline-secondary" (click)="markAllRead()">
+    Mark all read
+  </button>
+  <button class="btn btn-primary" (click)="modal.close()">OK</button>
+</div>
