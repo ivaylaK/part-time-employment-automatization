@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --red-color: rgb(250, 89, 82);
+  --white-color: rgb(229, 231, 235);
+  --black-color: rgb(60, 60, 60);
+
+  --font-family: '__Manrope_527bc1', '__Manrope_Fallback_527bc1';
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
