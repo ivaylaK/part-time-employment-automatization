@@ -1,0 +1,45 @@
+<div>
+  <h1>{{ header }}</h1>
+</div>
+
+<div class="login-container">
+
+  <form #signForm="ngForm" (ngSubmit)="onSubmit(signForm)">
+
+    <div *ngIf="mode === 'signup'">
+
+      <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="First Name" required />
+      <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="Last Name" required />
+      <label for="dropdown">City:</label>
+      <select id="dropdown" name="dropdown" [(ngModel)]="city">
+        <option value="София">Sofia</option>
+        <option value="Пловдив">Plovdiv</option>
+        <option value="Бургас">Burgas</option>
+      </select>
+      +359 <input type="text" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" required />
+    </div>
+
+    <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required />
+    <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Password" required />
+
+    <label>
+      <input type="checkbox" [(ngModel)]="showPassword" name="showPassword" /> Show Password
+    </label>
+
+    <div *ngIf="mode === 'signup'">
+
+      <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
+
+      <label>
+        <input type="checkbox" [(ngModel)]="privacyPolicyAccepted" name="privacyPolicyAccepted" required />
+        I agree to the
+        <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+      </label>
+    </div>
+    <button [disabled]="!signForm.valid" type="submit"> {{ submitButtonText }} </button>
+  </form>
+
+  <button (click)="switchMode()" type="submit"> {{ switchButtonText }} </button>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>
