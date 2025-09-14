@@ -1,0 +1,83 @@
+<form (ngSubmit)="getApplicants()">
+
+  <div class="row">
+    <!-- First Name -->
+    <div class="col-md-3 mb-3">
+      <label class="form-label" for="firstName">First Name</label>
+      <input (ngModelChange)="searchChanged()" [(ngModel)]="searchParams.firstName" class="form-control" id="firstName"
+             name="firstName" placeholder="Enter first name" type="text"/>
+    </div>
+
+    <!-- Last Name -->
+    <div class="col-md-3 mb-3">
+      <label class="form-label" for="lastName">Last Name</label>
+      <input (ngModelChange)="searchChanged()" [(ngModel)]="searchParams.lastName" class="form-control" id="lastName"
+             name="lastName" placeholder="Enter last name" type="text"/>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="col-md-3">
+      <label class="form-label" for="number">Phone Number</label>
+      <input (ngModelChange)="searchChanged()" [(ngModel)]="searchParams.number"
+             class="form-control" id="number" name="number" placeholder="e.g. +359..." type="text"/>
+    </div>
+
+    <!-- City -->
+    <div class="col-md-2">
+      <label class="form-label" for="city">City</label>
+      <input (ngModelChange)="searchChanged()" [(ngModel)]="searchParams.city"
+             class="form-control" id="city" name="city" placeholder="e.g. Sofia" type="text"/>
+    </div>
+
+    <!-- Rank -->
+    <div class="col-md-1">
+      <label class="form-label" for="rank">Rank</label>
+      <input (ngModelChange)="searchChanged()" [(ngModel)]="searchParams.rank"
+             class="form-control" id="rank" name="rank" type="number" />
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <button class="btn btn-primary" type="submit">Filter</button>
+    <button class="btn btn-secondary ms-2" type="button" (click)="resetFilters()">Reset</button>
+  </div>
+</form>
+
+<div class="mt-3">
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Number</th>
+      <th>City</th>
+      <th>Rank</th>
+      <th class="min-width">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let applicant of applicants">
+      <td>{{ applicant.firstName }}</td>
+      <td>{{ applicant.lastName }}</td>
+      <td>{{ applicant.number }}</td>
+      <td>{{ applicant.city }}</td>
+      <td>{{ applicant.rank }}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-secondary" (click)="editRank(applicant)">
+          Edit Rank
+        </button>
+      </td>
+
+      <button class="btn btn-sm btn-outline-secondary" (click)="editBlockedCompanies(applicant)">
+        Edit Blocked Companies
+      </button>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div>
+  <button class="btn btn-sm btn-outline-secondary" (click)="exportApplicantsToExcel()">Export applicants to Excel</button>
+</div>
