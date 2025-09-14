@@ -1,0 +1,107 @@
+<div>
+  <h1>{{ header }}</h1>
+</div>
+
+<form #jobForm="ngForm" (ngSubmit)="onSubmit(jobForm)">
+  <!-- Hidden submit element, to keep presses of enter key to trigger the cancel button -->
+  <input type="submit" hidden="hidden"/>
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="title">Позиция</label>
+      <input [(ngModel)]="job.title" class="form-control" id="title" name="title"
+             placeholder="Enter title" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="description">Описание</label>
+      <input [(ngModel)]="job.description" class="form-control" id="description" name="description"
+             placeholder="Enter description" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="client">Клиент</label>
+      <input [(ngModel)]="job.client" class="form-control" id="client" name="client"
+             placeholder="Enter client" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="city">Град</label>
+      <input [(ngModel)]="job.city" class="form-control" id="city" name="city"
+             placeholder="Enter city" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="location">Обект</label>
+      <input [(ngModel)]="job.location" class="form-control" id="location" name="location"
+             placeholder="Enter location" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="storeNumber">Номер на обекта</label>
+      <input [(ngModel)]="job.storeNumber" class="form-control" id="storeNumber" name="storeNumber"
+             placeholder="Enter store number" required type="text"/>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="startDate">Начална дата</label>
+      <input [(ngModel)]="job.startDate" class="form-control" id="startDate" name="startDate" required
+             type="date"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="endDate">Крайна дата</label>
+      <input [(ngModel)]="job.endDate" class="form-control" id="endDate" name="endDate" required
+             type="date"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="shiftStart">Начало на смяната</label>
+      <input [(ngModel)]="job.shiftStart" class="form-control" id="shiftStart" name="shiftStart" required
+             type="time"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="shiftEnd">Край на смяната</label>
+      <input [(ngModel)]="job.shiftEnd" class="form-control" id="shiftEnd" name="shiftEnd" required
+             type="time"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="personInCharge">Отговорник за смяната</label>
+      <input [(ngModel)]="job.personInCharge" class="form-control" id="personInCharge" name="personInCharge"
+             placeholder="Enter name of person in charge" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="personInChargeNumber">Номер на отговорника за смяната</label>
+      <input [(ngModel)]="job.personInChargeNumber" class="form-control" id="personInChargeNumber" name="personInChargeNumber"
+             placeholder="Enter phone number of person in charge" required type="text"/>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label" for="totalSlots">Брой свободни места</label>
+      <input [(ngModel)]="job.totalSlots" class="form-control" id="totalSlots" name="totalSlots"
+             placeholder="Enter number of total slots" required type="number"/>
+    </div>
+
+  </div>
+
+  <!-- Submit Button -->
+  <div class="d-flex flex-row justify-content-end">
+    <a class="btn btn-secondary me-1" routerLink="/jobs">
+      <i class="bi bi-x-lg"></i>
+      Cancel
+    </a>
+    <button [disabled]="!jobForm.valid" class="btn btn-primary" type="submit">
+      <i class="bi bi-check-lg"></i>
+      {{ submitButtonText }}
+    </button>
+  </div>
+
+</form>
