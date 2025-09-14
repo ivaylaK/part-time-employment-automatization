@@ -1,0 +1,34 @@
+<div class="mt-3">
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Номер на обект</th>
+      <th>Град</th>
+      <th>Клиент</th>
+      <th>Обект</th>
+      <th>Дата</th>
+      <th>Час</th>
+      <th>Име</th>
+      <th>Телефон</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let application of jobApplications">
+      <td>{{ application.jobStoreNumber }}</td>
+      <td>{{ application.jobCity }}</td>
+      <td>{{ application.jobClient }}</td>
+      <td>{{ application.jobLocation }}</td>
+      <td>{{ application.jobDatePeriod }}</td>
+      <td>{{ application.jobShiftPeriod }}</td>
+      <td>{{ application.applicantFullName }}</td>
+      <td>{{ application.applicantNumber }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div>
+  <button class="btn btn-sm btn-outline-secondary" (click)="exportApplicationsToExcel()">Export job applications to Excel</button>
+</div>
