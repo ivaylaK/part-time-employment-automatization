@@ -18,17 +18,19 @@ public class JobDto {
 
     private String title;
     private String description;
-    private String company;
+    private String client;
     private String city;
     private String location;
+    private String storeNumber;
 
     private Date startDate;
     private Date endDate;
     private String shiftStart;
     private String shiftEnd;
 
+    private String personInCharge;
+    private String personInChargeNumber;
+
     private Integer totalSlots;
     private Integer applicantsCount;
-
-//    private List<Applicant> applicants;
 }

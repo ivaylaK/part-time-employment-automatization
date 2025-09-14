@@ -72,6 +72,10 @@ public class JobController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/clients")
+    public List<String> getAllClients() {
+        return this.jobService.getAllClients();
+    }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteJob(@PathVariable("id") Long id) {

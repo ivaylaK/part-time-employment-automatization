@@ -16,5 +16,7 @@ public interface JobService {
 
     List<Applicant> getApplicantsByJobId(Long jobId);
 
+    List<String> getAllClients();
+
     void deleteJob(Long id);
 }
