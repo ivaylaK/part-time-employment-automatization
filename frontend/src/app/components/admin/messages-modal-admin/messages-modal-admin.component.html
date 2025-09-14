@@ -1,0 +1,34 @@
+<div>
+  <h1>Application requests</h1>
+  <button type="button" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+
+<div>
+  <div *ngIf="requests.length === 0">No requests</div>
+
+  <div *ngIf="requests.length">
+    <div *ngFor="let request of requests">
+        <div>
+          <div>
+            {{ request.applicantFirstName }} {{ request.applicantLastName }}
+            <span class="text-muted"> • {{ request.applicantNumber }} • {{ request.applicantCity }}</span>
+          </div>
+          <div>
+            {{ request.jobTitle }}
+            <span class="text-muted"> • {{ request.jobCity }} • {{ request.jobLocation }}</span>
+            <span class="text-muted"> • {{ request.jobClient }} • {{ request.jobStoreNumber }}</span>
+            <span class="text-muted"> • {{ request.jobStartDate }} - {{ request.jobEndDate }}</span>
+          </div>
+          <div>{{ request.message }}</div>
+        </div>
+        <div>
+          <button (click)="approve(request.id)" [disabled]="selected===request.id">Approve</button>
+          <button (click)="remove(request.id)" [disabled]="selected===request.id">Delete</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <button (click)="modal.close()">Close</button>
+</div>
