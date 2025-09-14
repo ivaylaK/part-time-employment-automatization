@@ -43,6 +43,7 @@ public class UserService {
             applicant.setLastName(dto.getLastName());
             applicant.setNumber(dto.getNumber());
             applicant.setCity(dto.getCity());
+            applicant.setRank(0);
 
             applicant.setUser(saved);
             applicantRepository.save(applicant);
