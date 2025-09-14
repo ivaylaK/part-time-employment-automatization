@@ -22,4 +22,6 @@ public class ApplicantDto {
 
     private List<Job> jobsApplied = new ArrayList<>();
     private Integer rank;
+
+    private List<String> blockedClients = new ArrayList<>();
 }

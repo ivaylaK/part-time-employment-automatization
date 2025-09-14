@@ -47,6 +47,21 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
     @Override
+    public List<Applicant> filterApplicants(String firstName, String lastName, String number, String city, Integer rank) {
+        return findAllApplicants().stream()
+                .filter(a -> firstName == null || a.getFirstName() != null &&
+                        a.getFirstName().toLowerCase().contains(firstName.toLowerCase()))
+                .filter(a -> lastName == null || a.getLastName() != null &&
+                        a.getLastName().toLowerCase().contains(lastName.toLowerCase()))
+                .filter(a -> number == null || a.getNumber() != null &&
+                        a.getNumber().toLowerCase().contains(number.toLowerCase()))
+                .filter(a -> city == null || a.getCity() != null &&
+                        a.getCity().toLowerCase().contains(city.toLowerCase()))
+                .filter(a -> rank == null || rank.equals(a.getRank()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Applicant> findApplicantById(Long id) {
         return applicantRepository.findById(id);
     }
@@ -60,7 +75,13 @@ public class ApplicantServiceImpl implements ApplicantService {
     public List<Job> getAppliedJobs(User user) {
         Applicant applicant = applicantRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("Applicant not found"));
-        return applicant.getJobsApplied();
+
+        List<Long> appliedJobIds = applicant.getJobsApplied();
+        return appliedJobIds.stream().map(
+                id -> jobRepository.findById(id).orElseThrow(
+                        () -> new IllegalArgumentException("Job not found")
+                )
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -68,11 +89,18 @@ public class ApplicantServiceImpl implements ApplicantService {
         Applicant applicant = applicantRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("Applicant not found"));
 
-        List<Job> appliedJobs = applicant.getJobsApplied();
+        List<Long> appliedJobIds = applicant.getJobsApplied();
         List<Job> allJobsAvailable = jobRepository.findJobsWithAvailableSlots();
 
+        List<String> blocked = applicant.getBlockedClients().stream().map(String::toLowerCase).toList();
+
         return allJobsAvailable.stream()
-                .filter(job -> !appliedJobs.contains(job))
+                .filter(job -> !appliedJobIds.contains(job.getId())
+                        && job.hasAvailableSlots())
+                .filter(job -> {
+                    String client = job.getClient();
+                    return client == null || blocked.stream().noneMatch(b -> b.equals(client.toLowerCase()));
+                })
                 .toList();
     }
 

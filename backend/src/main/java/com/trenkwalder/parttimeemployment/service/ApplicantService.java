@@ -14,6 +14,8 @@ public interface ApplicantService {
 
     List<Applicant> findAllApplicants();
 
+    List<Applicant> filterApplicants(String firstName, String lastName, String number, String city, Integer rank);
+
     Optional<Applicant> findApplicantById(Long id);
 
     Optional<Applicant> findApplicantByUser(User user);

@@ -28,14 +28,12 @@ import java.util.stream.Collectors;
 public class ApplicantController {
 
     private final ApplicantService applicantService;
-    private final JobService jobService;
     private final UserRepository userRepository;
     private final ApplicantMapper applicantMapper;
     private final JobMapper jobMapper;
 
-    public ApplicantController(ApplicantService applicantService, JobService jobService, UserRepository userRepository, ApplicantMapper applicantMapper, JobMapper jobMapper) {
+    public ApplicantController(ApplicantService applicantService, UserRepository userRepository, ApplicantMapper applicantMapper, JobMapper jobMapper) {
         this.applicantService = applicantService;
-        this.jobService = jobService;
         this.userRepository = userRepository;
         this.applicantMapper = applicantMapper;
         this.jobMapper = jobMapper;
@@ -45,12 +43,25 @@ public class ApplicantController {
     public ResponseEntity<ApplicantDto> createApplicant(@RequestBody ApplicantDto applicantDto) {
         Applicant applicant = applicantService.saveApplicant(applicantMapper.mapFrom(applicantDto));
         return new ResponseEntity<>(applicantMapper.mapTo(applicant), HttpStatus.CREATED);
+    }
 
+    @PostMapping("/{id}/blocked-clients")
+    public ResponseEntity<Void> addBlockedClient(@PathVariable Long id, @RequestParam String client) {
+        Applicant applicant = applicantService.findApplicantById(id).orElseThrow();
+        applicant.addBlockedClient(client);
+        applicantService.saveApplicant(applicant);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping()
-    public List<ApplicantDto> getAllApplicants() {
-        List<Applicant> applicants = applicantService.findAllApplicants();
+    public List<ApplicantDto> getAllApplicants(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String number,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer rank
+    ) {
+        List<Applicant> applicants = applicantService.filterApplicants(firstName, lastName, number, city, rank);
         return applicants
                 .stream()
                 .map(applicantMapper::mapTo)
@@ -71,6 +82,12 @@ public class ApplicantController {
         return foundApplicant.map(
                 applicant -> new ResponseEntity<>(applicantMapper.mapTo(applicant), HttpStatus.OK)
         ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{id}/blocked-clients")
+    public List<String> getBlockedClients(@PathVariable Long id) {
+        Applicant applicant = applicantService.findApplicantById(id).orElseThrow();
+        return applicant.getBlockedClients();
     }
 
     @GetMapping(path = "/dashboardApplied")
@@ -116,6 +133,14 @@ public class ApplicantController {
     @PutMapping(path = "/{id}/rank")
     public void updateRank(@RequestBody Integer rank, @PathVariable("id") Long id) {
         applicantService.updateRank(id, rank);
+    }
+
+    @DeleteMapping("/{id}/blocked-clients")
+    public ResponseEntity<Void> removeBlockedClient(@PathVariable Long id, @RequestParam String client) {
+        Applicant applicant = applicantService.findApplicantById(id).orElseThrow();
+        applicant.removeBlockedClient(client);
+        applicantService.saveApplicant(applicant);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{id}")

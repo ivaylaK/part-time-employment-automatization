@@ -27,17 +27,50 @@ public class Applicant {
     private String number;
     private String city;
 
-    @ManyToMany(mappedBy = "applicants")
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Job> jobsApplied;
+    private List<JobApplication> applications;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public List<Job> getJobsApplied() {
-        if (jobsApplied == null) jobsApplied = new ArrayList<>();
+    private Integer rank;
+
+    @ElementCollection
+    @CollectionTable(name = "applicant_blocked_clients",
+                     joinColumns = @JoinColumn(name = "applicant_id"))
+    @Column(name = "client")
+    private List<String> blockedClients = new ArrayList<>();
+
+    public List<Long> getJobsApplied() {
+        if (applications == null) applications = new ArrayList<>();
+
+        List<Long> jobsApplied = new ArrayList<>();
+        for(JobApplication application : applications) {
+            jobsApplied.add(application.getJob().getId());
+        }
         return jobsApplied;
     }
-    private Integer rank;
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public void addBlockedClient(String client) {
+        if (client == null) return;
+
+        String clientUpdated = client.trim();
+        if (clientUpdated.isEmpty()) return;
+
+        if (blockedClients.stream().noneMatch(b -> b.equalsIgnoreCase(clientUpdated))) blockedClients.add(clientUpdated);
+    }
+
+    public void removeBlockedClient(String client) {
+        if (client == null) return;
+
+        String clientUpdated = client.trim();
+
+        blockedClients.removeIf(b -> b.equalsIgnoreCase(clientUpdated));
+    }
 }
