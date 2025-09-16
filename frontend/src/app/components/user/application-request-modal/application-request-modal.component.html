@@ -1,14 +1,14 @@
 <div class="modal-header">
-  <h5 class="modal-title">Request to apply</h5>
+  <h5 class="modal-title">Request to apply / unapply</h5>
   <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
 </div>
 
 <div class="modal-body">
   <p class="mb-2">
-    You don't have access to apply yet. Send a short message to the admins.
+    Send your request to the Trenkwalder admins.
   </p>
   <textarea [(ngModel)]="message" class="form-control" rows="4"
-            placeholder="Tell us a bit about your experience / availability"></textarea>
+            placeholder="Type here"></textarea>
 </div>
 
 <div class="modal-footer">
