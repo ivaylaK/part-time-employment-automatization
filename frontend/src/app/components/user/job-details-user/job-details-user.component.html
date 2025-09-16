@@ -4,8 +4,8 @@
   <p>{{job.client}}</p>
   <p>{{job.city}}</p>
   <p>{{job.location}}</p>
-  <p>{{job.startDate}}</p>
-  <p>{{job.endDate}}</p>
+  <p>{{job.startDate | date:'yyyy-MM-dd' }}</p>
+  <p>{{job.endDate   | date:'yyyy-MM-dd' }}</p>
   <p>{{job.shiftStart}}</p>
   <p>{{job.shiftEnd}}</p>
   <p>{{job.personInCharge}}</p>

@@ -3,7 +3,7 @@ import {Job} from '../../../dto/job';
 import {JobService} from '../../../service/job.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApplicantService} from '../../../service/applicant.service';
-import {NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {ApplicantDto} from '../../../dto/applicant';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicationRequestModalComponent} from '../application-request-modal/application-request-modal.component';
@@ -12,7 +12,8 @@ import {RequestService} from '../../../service/request.service';
 @Component({
   selector: 'app-job-details-user',
   imports: [
-    NgIf
+    NgIf,
+    DatePipe
   ],
   templateUrl: './job-details-user.component.html',
   standalone: true,
