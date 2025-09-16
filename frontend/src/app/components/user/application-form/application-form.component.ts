@@ -30,12 +30,12 @@ export class ApplicationFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder,
-    private jobSrv: JobService,
-    private inviteSrv: JobInvitationService,
-    private applicantSrv: ApplicantService,
+    private formBuilder: FormBuilder,
+    private jobService: JobService,
+    private jobInvitationService: JobInvitationService,
+    private applicantService: ApplicantService,
   ) {
-    this.form = this.fb.group({
+    this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       number: ['', Validators.required],
@@ -48,14 +48,12 @@ export class ApplicationFormComponent implements OnInit {
     const jobIdParam = this.route.snapshot.paramMap.get('id');
     if (jobIdParam) this.id = +jobIdParam;
 
-    // prefill user info
-    this.applicantSrv.getByUser().subscribe({
+    this.applicantService.getByUser().subscribe({
       next: (a: ApplicantDto) => this.form.patchValue(a),
     });
 
-    // load job window (profile path)
     if (this.id) {
-      this.jobSrv.getById(this.id).subscribe({
+      this.jobService.getById(this.id).subscribe({
         next: (job) => {
           this.job = job;
           const start = new Date(`${job.startDate}T00:00:00`);
@@ -65,22 +63,18 @@ export class ApplicationFormComponent implements OnInit {
         },
       });
     }
-    // if you want token flow to also show range, expose an endpoint to fetch job by token and set min/max same way.
   }
 
-  // utils
   private toNgb(date: Date): NgbDateStruct {
     return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
   }
 
-  // Track the month/year the datepicker is showing
   currentView?: { year: number; month: number };
 
   onNavigate(next: {year: number; month: number}) {
     this.currentView = next;
   }
 
-// Compare/convert helpers (you already have some of these; keep the struct versions)
   onDateSelection(date: any): void {
     const i = this.selectedDates.findIndex(d =>
       d.year === date.year && d.month === date.month && d.day === date.day
@@ -106,7 +100,6 @@ export class ApplicationFormComponent implements OnInit {
       .map(d => this.toDate(d).toISOString().split('T')[0]);
   }
 
-// IMPORTANT: signature for ngb markDisabled
   markDisabled = (date: NgbDateStruct): boolean => {
     if (!this.minDate || !this.maxDate) return true;
     const t   = new Date(date.year, date.month - 1, date.day).getTime();
@@ -115,28 +108,27 @@ export class ApplicationFormComponent implements OnInit {
     return t < min || t > max;
   };
 
-// Nicely formatted month name (uses browser locale)
   get monthLabel(): string {
     if (!this.currentView) return '';
     const d = new Date(this.currentView.year, this.currentView.month - 1, 1);
-    return d.toLocaleString('bg', { month: 'long', year: 'numeric' }); // change 'bg' if you want
+    return d.toLocaleString('en', { month: 'long', year: 'numeric' });
   }
 
   onSubmit(): void {
     if (this.form.invalid) return;
     if (this.selectedDates.length === 0) {
-      alert('Моля изберете поне една дата.');
+      alert('Please pick at least one date.');
       return;
     }
     const payload = { chosenDays: this.chosenDaysIso };
 
     if (this.token) {
-      this.inviteSrv.applyToJobWithToken(this.token, payload).subscribe({
+      this.jobInvitationService.applyToJobWithToken(this.token, payload).subscribe({
         next: () => { alert('Application successful!'); this.router.navigate(['/dashboard']); },
         error: (err) => alert('Application failed: ' + (err?.error ?? '')),
       });
     } else if (this.id) {
-      this.inviteSrv.applyToJobThroughProfile(this.id, payload).subscribe({
+      this.jobInvitationService.applyToJobThroughProfile(this.id, payload).subscribe({
         next: () => { alert('Application successful!'); this.router.navigate(['/dashboard']); },
         error: (err) => alert('Application failed: ' + (err?.error ?? '')),
       });

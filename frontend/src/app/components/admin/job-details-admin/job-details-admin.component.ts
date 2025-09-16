@@ -35,17 +35,17 @@ export class JobDetailsAdminComponent implements OnInit {
   selectedDates: NgbDateStruct[] = [];
 
   constructor(
-    private jobSrv: JobService,
-    private applicantSrv: ApplicantService,
-    private inviteSrv: JobInvitationService,
-    private jobAppSrv: JobApplicationService,
+    private jobService: JobService,
+    private applicantService: ApplicantService,
+    private jobInvitationService: JobInvitationService,
+    private jobApplicationService: JobApplicationService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.jobId = +this.route.snapshot.paramMap.get('id')!;
     if (this.jobId) {
-      this.jobSrv.getById(this.jobId).subscribe({
+      this.jobService.getById(this.jobId).subscribe({
         next: (job) => {
           this.job = job;
           const start = new Date(`${job.startDate}T00:00:00`);
@@ -67,14 +67,12 @@ export class JobDetailsAdminComponent implements OnInit {
     return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
   }
 
-// Track the month/year the datepicker is showing
   currentView?: { year: number; month: number };
 
   onNavigate(next: {year: number; month: number}) {
     this.currentView = next;
   }
 
-// Compare/convert helpers (you already have some of these; keep the struct versions)
   onDateSelection(date: any): void {
     const i = this.selectedDates.findIndex(d =>
       d.year === date.year && d.month === date.month && d.day === date.day
@@ -100,7 +98,6 @@ export class JobDetailsAdminComponent implements OnInit {
       .map(d => this.toDate(d).toISOString().split('T')[0]);
   }
 
-// IMPORTANT: signature for ngb markDisabled
   markDisabled = (date: NgbDateStruct): boolean => {
     if (!this.minDate || !this.maxDate) return true;
     const t   = new Date(date.year, date.month - 1, date.day).getTime();
@@ -109,22 +106,21 @@ export class JobDetailsAdminComponent implements OnInit {
     return t < min || t > max;
   };
 
-// Nicely formatted month name (uses browser locale)
   get monthLabel(): string {
     if (!this.currentView) return '';
     const d = new Date(this.currentView.year, this.currentView.month - 1, 1);
-    return d.toLocaleString('bg', { month: 'long', year: 'numeric' }); // change 'bg' if you want
+    return d.toLocaleString('en', { month: 'long', year: 'numeric' });
   }
 
 
   getJobApplicants(jobId: number): void {
-    this.jobSrv.getApplicantsForJob(jobId).subscribe({
+    this.jobService.getApplicantsForJob(jobId).subscribe({
       next: (list) => (this.jobApplicants = list),
     });
   }
 
   getAllApplicants(): void {
-    this.applicantSrv.getAll().subscribe({
+    this.applicantService.getAll().subscribe({
       next: (list) => (this.allApplicants = list),
     });
   }
@@ -137,10 +133,10 @@ export class JobDetailsAdminComponent implements OnInit {
   addApplicantAsAdmin(): void {
     if (!this.selectedApplicant || !this.jobId) return;
     if (this.chosenDaysIso.length === 0) {
-      alert('Моля изберете поне една дата.');
+      alert('Please pick at least one date.');
       return;
     }
-    this.inviteSrv
+    this.jobInvitationService
       .addApplicantAsAdmin(this.jobId, this.selectedApplicant.id!, { chosenDays: this.chosenDaysIso })
       .subscribe({
         next: () => {
@@ -154,7 +150,7 @@ export class JobDetailsAdminComponent implements OnInit {
 
   removeApplicantAsAdmin(applicantId: number): void {
     if (!this.jobId) return;
-    this.jobAppSrv.deleteJobApplication(this.jobId, applicantId).subscribe({
+    this.jobApplicationService.deleteJobApplication(this.jobId, applicantId).subscribe({
       next: () => {
         alert('Applicant removed from the job');
         this.getJobApplicants(this.jobId!);
