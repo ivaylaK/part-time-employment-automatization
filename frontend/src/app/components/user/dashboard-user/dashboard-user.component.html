@@ -1,17 +1,17 @@
-<div> Добре дошли в платформата на Тренквалдер </div>
+<div> Welcome to Trenkwalder's platform for part-time employment! </div>
 
 <button class="btn btn-outline-primary position-relative" (click)="openMessages()">
-  Съобщения
+  Messages
   <span *ngIf="messagesCount > 0"
         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
     {{ messagesCount }}
-    <span class="visually-hidden">непрочетени</span>
+    <span class="visually-hidden">unread</span>
   </span>
 </button>
 
 <div class="toggle">
-  <button (click)="showAvailable = false" [disabled]="!showAvailable"> Мои смени </button>
-  <button (click)="showAvailable = true" [disabled]="showAvailable"> Налични смени </button>
+  <button (click)="showAvailable = false" [disabled]="!showAvailable"> My shifts </button>
+  <button (click)="showAvailable = true" [disabled]="showAvailable"> Available shifts </button>
 </div>
 
 <ng-container *ngIf="showAvailable; else appliedJobsSection">
@@ -51,5 +51,5 @@
 </ng-template>
 
 <ng-template #noJobs>
-  <p>В момента няма налични позиции.</p>
+  <p>There are currently no shifts available.</p>
 </ng-template>

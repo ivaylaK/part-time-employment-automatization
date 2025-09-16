@@ -3,43 +3,42 @@
 </div>
 
 <form #jobForm="ngForm" (ngSubmit)="onSubmit(jobForm)">
-  <!-- Hidden submit element, to keep presses of enter key to trigger the cancel button -->
   <input type="submit" hidden="hidden"/>
 
   <div class="row">
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="title">Позиция</label>
+      <label class="form-label" for="title">Job</label>
       <input [(ngModel)]="job.title" class="form-control" id="title" name="title"
              placeholder="Enter title" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="description">Описание</label>
+      <label class="form-label" for="description">Description</label>
       <input [(ngModel)]="job.description" class="form-control" id="description" name="description"
              placeholder="Enter description" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="client">Клиент</label>
+      <label class="form-label" for="client">Client</label>
       <input [(ngModel)]="job.client" class="form-control" id="client" name="client"
              placeholder="Enter client" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="city">Град</label>
+      <label class="form-label" for="city">City</label>
       <input [(ngModel)]="job.city" class="form-control" id="city" name="city"
              placeholder="Enter city" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="location">Обект</label>
+      <label class="form-label" for="location">Store</label>
       <input [(ngModel)]="job.location" class="form-control" id="location" name="location"
              placeholder="Enter location" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="storeNumber">Номер на обекта</label>
+      <label class="form-label" for="storeNumber">Store number</label>
       <input [(ngModel)]="job.storeNumber" class="form-control" id="storeNumber" name="storeNumber"
              placeholder="Enter store number" required type="text"/>
     </div>
@@ -49,43 +48,43 @@
   <div class="row">
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="startDate">Начална дата</label>
+      <label class="form-label" for="startDate">Start Date</label>
       <input [(ngModel)]="job.startDate" class="form-control" id="startDate" name="startDate" required
              type="date"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="endDate">Крайна дата</label>
+      <label class="form-label" for="endDate">End Date</label>
       <input [(ngModel)]="job.endDate" class="form-control" id="endDate" name="endDate" required
              type="date"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="shiftStart">Начало на смяната</label>
+      <label class="form-label" for="shiftStart">Start of shift</label>
       <input [(ngModel)]="job.shiftStart" class="form-control" id="shiftStart" name="shiftStart" required
              type="time"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="shiftEnd">Край на смяната</label>
+      <label class="form-label" for="shiftEnd">End of shift</label>
       <input [(ngModel)]="job.shiftEnd" class="form-control" id="shiftEnd" name="shiftEnd" required
              type="time"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="personInCharge">Отговорник за смяната</label>
+      <label class="form-label" for="personInCharge">Person in Charge</label>
       <input [(ngModel)]="job.personInCharge" class="form-control" id="personInCharge" name="personInCharge"
              placeholder="Enter name of person in charge" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="personInChargeNumber">Номер на отговорника за смяната</label>
+      <label class="form-label" for="personInChargeNumber">Person in Charge Phone Number</label>
       <input [(ngModel)]="job.personInChargeNumber" class="form-control" id="personInChargeNumber" name="personInChargeNumber"
              placeholder="Enter phone number of person in charge" required type="text"/>
     </div>
 
     <div class="col-md-6 mb-3">
-      <label class="form-label" for="totalSlots">Брой свободни места</label>
+      <label class="form-label" for="totalSlots">Available slots</label>
       <input [(ngModel)]="job.totalSlots" class="form-control" id="totalSlots" name="totalSlots"
              placeholder="Enter number of total slots" required type="number"/>
     </div>
