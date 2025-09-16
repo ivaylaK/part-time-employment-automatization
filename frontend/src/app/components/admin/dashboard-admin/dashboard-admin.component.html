@@ -1,43 +1,70 @@
-<body>
-<a class="btn btn-success" [routerLink]="['/admin/applicants']" aria-label="View all applicants">
-  <i class="bi bi-plus-lg"></i>
-  View all applicants
-</a>
+<div class="container py-3">
+  <div class="row align-items-start">
 
-<a class="btn btn-success" [routerLink]="['/admin/job-applications']" aria-label="View all job applications">
-  <i class="bi bi-plus-lg"></i>
-  View all job applications
-</a>
+    <aside class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0">
+      <div class="d-flex flex-column gap-2 sticky-top left-rail">
+        <a class="btn btn-outline-secondary w-100 mb-2" [routerLink]="['/admin/applicants']" aria-label="View all applicants">
+          <i class="bi bi-people"></i> View all applicants
+        </a>
 
-<button class="btn btn-outline-primary position-relative" (click)="openMessages()">
-  Messages
-  <span *ngIf="messagesCount > 0"
-        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    {{ messagesCount }}
-    <span class="visually-hidden">pending requests</span>
-  </span>
-</button>
+        <a class="btn btn-outline-secondary w-100 mb-2" [routerLink]="['/admin/job-applications']" aria-label="View all job applications">
+          <i class="bi bi-ui-checks-grid"></i> View all job applications
+        </a>
 
-<a class="btn btn-success" [routerLink]="['/admin/jobs/create']" aria-label="New job">
-  <i class="bi bi-plus-lg"></i>
-  New job
-</a>
-<table>
-  <tr *ngFor="let job of jobs">
-    <td>
-      <div class="job-preview">
-        <div class="job-title">
-          {{job.title}}
-        </div>
-        <div class="job-details">
-          <span><i class="bi bi-geo-alt"></i> {{job.city}} </span>
-          <span><i class="bi bi-calendar4-week"></i> {{job.startDate | date: 'yyyy-MM-dd'}} - {{job.endDate | date: 'dd.MM'}} </span>
-          <button (click)="details(job.id)" [routerLink]="['/admin/jobs/details', job.id]"> view applicants <i class="bi bi-arrow-right"></i> </button>
-          <button (click)="edit(job.id)" [routerLink]="['/admin/jobs/edit', job.id]"> edit <i class="bi bi-arrow-right"></i> </button>
-          <button (click)="delete(job.id)" [routerLink]="['/admin/jobs/delete', job.id]"> delete <i class="bi bi-arrow-right"></i> </button>
-        </div>
+        <a class="btn btn-outline-secondary w-100 mb-2" [routerLink]="['/admin/jobs/create']" aria-label="New job">
+          <i class="bi bi-plus-lg"></i> New job
+        </a>
       </div>
-    </td>
-  </tr>
-</table>
-</body>
+    </aside>
+
+    <main class="col-12 col-md-6 col-lg-8">
+      <div class="jobs-wrap mx-auto">
+        <table class="table align-middle">
+          <tbody>
+          <tr *ngFor="let job of jobs">
+            <td>
+              <div class="job-preview p-3 border rounded-3">
+                <div class="job-title h5 mb-2">{{ job.title }}</div>
+
+                <div class="job-details d-flex flex-wrap gap-3 small text-muted">
+                  <span><i class="bi bi-geo-alt"></i> {{ job.city }}</span>
+                  <span>
+                    <i class="bi bi-calendar4-week"></i>
+                    {{ job.startDate | date:'yyyy-MM-dd' }} – {{ job.endDate | date:'dd.MM' }}
+                  </span>
+                </div>
+
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                  <a class="btn btn-outline-primary btn-sm" [routerLink]="['/admin/jobs/details', job.id]">
+                    view applicants
+                  </a>
+                  <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/admin/jobs/edit', job.id]">
+                    edit
+                  </a>
+                  <button class="btn btn-outline-danger btn-sm" (click)="delete(job.id)">
+                    delete
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <aside class="col-12 col-md-3 col-lg-2">
+      <div class="d-flex justify-content-md-end sticky-top right-rail">
+        <button class="btn btn-outline-primary position-relative" (click)="openMessages()">
+          Messages
+          <span *ngIf="messagesCount > 0"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ messagesCount }}
+            <span class="visually-hidden">pending requests</span>
+          </span>
+        </button>
+      </div>
+    </aside>
+
+  </div>
+</div>
